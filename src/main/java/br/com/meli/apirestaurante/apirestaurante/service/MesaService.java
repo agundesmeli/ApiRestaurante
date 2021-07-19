@@ -34,7 +34,7 @@ public class MesaService {
         return valorTotalMesa;
     }
 
-    public static void criarMesa(Mesa mesa) {
+    public void criarMesa(Mesa mesa) {
         MesaIdUtil.mesaIdExistsValidation(mesa);
         mesaRepository.addMesa(mesa);
     }

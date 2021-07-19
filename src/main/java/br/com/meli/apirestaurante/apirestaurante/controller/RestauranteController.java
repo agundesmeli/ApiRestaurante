@@ -41,7 +41,7 @@ public class RestauranteController {
     @PostMapping
     @RequestMapping("/mesa")
     public ResponseEntity<?> criarMesa(@Valid @RequestBody Mesa mesa) {
-        MesaService.criarMesa(mesa);
+        mesaService.criarMesa(mesa);
         MesaDTO mesaDTO = MesaConverter.converteEntityToDTO(mesa);
         return ResponseEntity.status(HttpStatus.OK).body(mesaDTO);
     }
@@ -56,7 +56,7 @@ public class RestauranteController {
     @GetMapping
     @RequestMapping("/pedidos/{mesaId}")
     public ResponseEntity<?> obterPedidos(@PathVariable("mesaId") Integer mesaId) {
-        List<Pedido> pedidos = PedidoService.consultarPedidosMesa(mesaId);
+        List<Pedido> pedidos = pedidoService.consultarPedidosMesa(mesaId);
         List<PedidoDTO> pedidosDTOS = PedidoConverter.converteListEntityToDTO(pedidos);
         return ResponseEntity.status(HttpStatus.OK).body(pedidosDTOS);
     }
@@ -64,7 +64,7 @@ public class RestauranteController {
     @PostMapping
     @RequestMapping("/adicionar_pedido/{mesaId}")
     public ResponseEntity<?> criarPedido(@PathVariable("mesaId") Integer mesaId, @Valid @RequestBody Pedido pedido) {
-        PedidoService.criarPedido(mesaId, pedido);
+        pedidoService.criarPedido(mesaId, pedido);
         PedidoDTO pedidoDTO = PedidoConverter.converteEntityToDTO(pedido);
         return ResponseEntity.status(HttpStatus.OK).body(pedidoDTO);
     }
@@ -72,21 +72,21 @@ public class RestauranteController {
     @PutMapping
     @RequestMapping("/alterar_pedido/{mesaId}")
     public ResponseEntity<?> alterarPedido(@PathVariable("mesaId") Integer mesaId, @Valid @RequestBody Pedido pedido) {
-        PedidoService.alterarPedido(mesaId, pedido);
+        pedidoService.alterarPedido(mesaId, pedido);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping
     @RequestMapping("/excluir_pedido/{mesaId}/{pedidoId}")
     public ResponseEntity<?> excluirPedido(@PathVariable("mesaId") Integer mesaId, @PathVariable("pedidoId") Integer pedidoId) {
-        PedidoService.deletarPedidoMesa(mesaId, pedidoId);
+        pedidoService.deletarPedidoMesa(mesaId, pedidoId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping
     @RequestMapping("/fechamento")
     public ResponseEntity<?> fecharPedidos(@Valid @RequestBody Mesa mesa) {
-        PedidoService.fecharPedidos(mesa);
+        pedidoService.fecharPedidos(mesa);
         MesaDTO mesaDTO = MesaConverter.converteEntityToDTO(mesa);
         caixa.dinheiroEmCaixa = caixa.getDinheiroEmCaixa() + mesaDTO.getValorTotalConsumido();
         return ResponseEntity.status(HttpStatus.OK).body(mesaDTO);
@@ -101,6 +101,6 @@ public class RestauranteController {
     @GetMapping
     @RequestMapping("/caixa_hoje")
     public Double consultarCaixaHoje() {
-        return PedidoService.calcularFaturamentoHoje();
+        return pedidoService.calcularFaturamentoHoje();
     }
 }

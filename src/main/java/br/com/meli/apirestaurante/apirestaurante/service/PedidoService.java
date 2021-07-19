@@ -38,41 +38,36 @@ public class PedidoService {
         return valorTotalPedido;
     }
 
-    public static void criarPedido(Integer mesaId, Pedido pedido) {
+    public void criarPedido(Integer mesaId, Pedido pedido) {
         MesaIdUtil.mesaIdDoNotExistsValidation(mesaId);
-
         List<Pedido> pedidos = mesaRepository.getMesaById(mesaId).getPedidos();
-
         PedidoIdUtil.pedidoIdExistsValidation(pedidos, pedido);
-
         mesaRepository.addPedido(mesaId, pedido);
     }
 
-    public static List<Pedido> consultarPedidosMesa(Integer id) {
+    public List<Pedido> consultarPedidosMesa(Integer id) {
         MesaIdUtil.mesaIdDoNotExistsValidation(id);
         Mesa mesa = mesaRepository.getMesaById(id);
         return mesa.getPedidos();
-
     }
 
-    public static void alterarPedido(Integer id, Pedido pedido) {
+    public void alterarPedido(Integer id, Pedido pedido) {
         MesaIdUtil.mesaIdDoNotExistsValidation(id);
         mesaRepository.updatePedido(id, pedido);
-
     }
 
-    public static void deletarPedidoMesa(Integer id, Integer idPedido) {
+    public void deletarPedidoMesa(Integer id, Integer idPedido) {
         MesaIdUtil.mesaIdDoNotExistsValidation(id);
         mesaRepository.deletePedido(id, idPedido);
     }
 
-    public static void fecharPedidos(Mesa mesa) {
+    public void fecharPedidos(Mesa mesa) {
         for (Pedido p : mesa.getPedidos()) {
             p.setStatus(Status.FECHADO);
         }
     }
 
-    public static Double calcularFaturamentoHoje() {
+    public Double calcularFaturamentoHoje() {
         List<Mesa> mesas = mesaRepository.getList();
         List<Pedido> pedidos = new ArrayList<>();
         List<PedidoDTO> pedidosHoje = new ArrayList<>();
